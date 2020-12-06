@@ -56,19 +56,15 @@ export default defineComponent({
     const state = useFirebaseAuth();
     const router = useRouter();
     const credentials = ref<{ [key: string]: string }>({
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     });
 
     const handleChange = (e: CustomEvent) => {
-      console.log(e);
       const name: string = (e?.target as any)?.name;
       credentials.value[name as string] = e.detail.value;
     };
 
-    /**
-     *
-     */
     const handleAlert = (message: string, isError = false) => {
       alertController
         .create({
@@ -79,10 +75,6 @@ export default defineComponent({
         .then((t) => t.present());
     };
 
-    /**
-     *
-     *
-     */
     const doLogin = async () => {
       try {
         const { username, password } = credentials.value;
@@ -103,7 +95,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-ion-item {
-  --padding-start: 0px;
-}
 </style>

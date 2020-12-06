@@ -6,6 +6,11 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Items</ion-title>
+        <ion-buttons slot="end">
+          <ion-button @click="addItem">
+            <ion-icon slot="icon-only" :ios="iosIcon" :md="mdIcon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     
@@ -17,15 +22,15 @@
       </ion-header>
     
       <div id="container">
-        <strong class="capitalize">{{ folder }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <strong class="capitalize">No items added, add one</strong>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonButton, IonIcon } from '@ionic/vue';
+import { addCircleOutline, addCircleSharp } from 'ionicons/icons';
 import { useRoute } from 'vue-router';
 import { ref, computed, watch } from 'vue';
 
@@ -39,17 +44,28 @@ export default {
     IonPage,
     IonTitle,
     IonToolbar,
+    IonButton,
+    IonIcon
   },
   setup() {
     const route = useRoute();
     const folder = ref(route.params.id || 'Inbox');
     const matchedFolder = computed(() => route.params.id);
+  
+    const addItem = () => {
+      console.log('add')
+    }
     
     watch(matchedFolder, () => {
       folder.value = matchedFolder.value as string;
     })
     
-    return { folder }
+    return { 
+      folder,
+      iosIcon: addCircleOutline,
+      mdIcon: addCircleSharp,
+      addItem
+    }
   }
 }
 </script>

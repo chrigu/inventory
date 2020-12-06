@@ -4,7 +4,7 @@
       <ion-menu content-id="main-content" type="overlay">
         <ion-content>
           <ion-list id="inbox-list">
-            <ion-list-header>bli</ion-list-header>
+            <ion-list-header>{{user.email}}</ion-list-header>
             <ion-note>bla</ion-note>
   
             <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
@@ -34,7 +34,8 @@
 import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { clipboardSharp, clipboardOutline, cubeOutline, cubeSharp, documentOutline, documentSharp } from 'ionicons/icons';
+import useFirebaseAuth from "../hooks/firebase-auth";
 
 export default defineComponent({
   name: 'App',
@@ -58,24 +59,26 @@ export default defineComponent({
       {
         title: 'Iventory',
         url: '/tabs/inventory',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
+        iosIcon: clipboardOutline,
+        mdIcon: clipboardSharp
       },
       {
         title: 'Items',
         url: '/tabs/items',
-        iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp
+        iosIcon: cubeOutline,
+        mdIcon: cubeSharp
       },
       {
         title: 'Log',
         url: '/tabs/log',
-        iosIcon: heartOutline,
-        mdIcon: heartSharp
+        iosIcon: documentOutline,
+        mdIcon: documentSharp
       }
     ];
+
+    const {user} = useFirebaseAuth()
     
-    const path = window.location.pathname.split('folder/')[1];
+    const path = window.location.pathname.split('tabs/')[1];
     if (path !== undefined) {
       selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
@@ -85,21 +88,14 @@ export default defineComponent({
     return { 
       selectedIndex,
       appPages, 
-      archiveOutline, 
-      archiveSharp, 
-      bookmarkOutline, 
-      bookmarkSharp, 
-      heartOutline, 
-      heartSharp, 
-      mailOutline, 
-      mailSharp, 
-      paperPlaneOutline, 
-      paperPlaneSharp, 
-      trashOutline, 
-      trashSharp, 
-      warningOutline, 
-      warningSharp,
-      isSelected: (url: string) => url === route.path ? 'selected' : ''
+      clipboardOutline,
+      clipboardSharp,
+      cubeOutline,
+      cubeSharp,
+      documentOutline,
+      documentSharp,
+      isSelected: (url: string) => url === route.path ? 'selected' : '',
+      user
     }
   }
 });

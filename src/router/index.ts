@@ -17,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   { 
     path: '/tabs',
+    name: 'home',
     component: () => import ('../views/Tabs.vue'),
     children: [
       {
@@ -41,17 +42,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log("user2", state.user.value); // 🤷‍♂️
+  console.log("user2", state.user.value) // 🤷‍♂️
 
   if (state.user.value && (to.name === 'login')) {
-    console.log('goto home')
-    next({ name: "home", replace: true });
+    next({ name: "home", replace: true })
   } else if (!state.user.value && ( to.name !== 'login' && to.name !== 'signup')) {
     console.log('goto login')
-    next({ name: "login", replace: true });
-  } else if (!(state.user.value as any)?.displayName && (to.name !== 'completeRegistration' && to.name !== 'login' && to.name !== 'signup')) {
-    console.log('goto complete')
-    next({ name: "completeRegistration", replace: true });
+    next({ name: "login", replace: true })
   } else {
     next();
   }

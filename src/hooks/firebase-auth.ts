@@ -19,7 +19,6 @@ interface TState {
   error: Error | null;
   loading: boolean;
   user: firebase.User | firebase.auth.UserCredential | null;
-  userData: any;
   initialized: boolean;
 }
 
@@ -27,33 +26,10 @@ const state = reactive<TState>({
   user: null,
   loading: true,
   error: null,
-  userData: null,
   initialized: false,
 });
 
 export default function() {
-  const getUserData = async () => {
-    const resp  = await firebase
-      .firestore()
-      .collection("profiles")
-      .doc(firebase.auth().currentUser?.uid)
-      .get();
-    console.log('resp', resp)
-    if (resp.exists) {
-      return {
-        ...resp.data(),
-        id : firebase.auth().currentUser?.uid
-      }
-    }
-  };
-
-  /**
-   *
-   * @param username
-   * @param password
-   */
-
-
 
         /**
    *
@@ -73,8 +49,7 @@ export default function() {
           state.error = null;
           state.loading = false;
           state.user = user;
-          state.userData = await getUserData();
-          console.log(state.user, state.userData)
+          console.log(state.user, state.user)
           return user;
         },
         (error) => {
@@ -103,7 +78,6 @@ export default function() {
           state.error = null;
           state.loading = false;
           state.user = null;
-          state.userData = null;
         },
         (error) => {
           state.error = error;
@@ -126,8 +100,7 @@ export default function() {
           console.log('onAuthStateChanged', _user)
           if (_user) {
             state.user = _user;
-            state.userData = await getUserData();
-            console.log('signup', _user, state.userData)
+            console.log('signup', _user)
           } else {
             state.user = null;
           }
