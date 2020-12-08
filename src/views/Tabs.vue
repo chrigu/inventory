@@ -1,101 +1,25 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content">
-      <ion-menu content-id="main-content" type="overlay">
-        <ion-content>
-          <ion-list id="inbox-list">
-            <ion-list-header>{{user.email}}</ion-list-header>
-            <ion-note>bla</ion-note>
-  
-            <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
-                <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </ion-list>
-  
-          <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
-  
-            <!-- <ion-item v-for="(label, index) in labels" lines="none" :key="index">
-              <ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
-              <ion-label>{{ label }}</ion-label>
-            </ion-item> -->
-          </ion-list>
-        </ion-content>
-      </ion-menu>
-      <ion-router-outlet id="main-content"></ion-router-outlet>
-    </IonSplitPane>
+    <Test />
   </IonApp>
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
+import { IonApp  } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { clipboardSharp, clipboardOutline, cubeOutline, cubeSharp, documentOutline, documentSharp } from 'ionicons/icons';
-import useFirebaseAuth from "../hooks/firebase-auth";
+import Test from './Test.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     IonApp, 
-    IonContent, 
-    IonIcon, 
-    IonItem, 
-    IonLabel, 
-    IonList, 
-    IonListHeader, 
-    IonMenu, 
-    IonMenuToggle, 
-    IonNote, 
-    IonRouterOutlet, 
-    IonSplitPane,
+    Test
   },
   setup() {
-    const selectedIndex = ref(0);
-    const appPages = [
-      {
-        title: 'Iventory',
-        url: '/tabs/inventory',
-        iosIcon: clipboardOutline,
-        mdIcon: clipboardSharp
-      },
-      {
-        title: 'Items',
-        url: '/tabs/items',
-        iosIcon: cubeOutline,
-        mdIcon: cubeSharp
-      },
-      {
-        title: 'Log',
-        url: '/tabs/log',
-        iosIcon: documentOutline,
-        mdIcon: documentSharp
-      }
-    ];
 
-    const {user} = useFirebaseAuth()
-    
-    const path = window.location.pathname.split('tabs/')[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
-    
-    const route = useRoute();
     
     return { 
-      selectedIndex,
-      appPages, 
-      clipboardOutline,
-      clipboardSharp,
-      cubeOutline,
-      cubeSharp,
-      documentOutline,
-      documentSharp,
-      isSelected: (url: string) => url === route.path ? 'selected' : '',
-      user
     }
   }
 });

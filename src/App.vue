@@ -12,10 +12,9 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonRouterOutlet, IonPage } from '@ionic/vue';
+import { IonApp, IonContent, IonRouterOutlet, IonPage, IonMenu } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 
 export default defineComponent({
   name: 'App',
@@ -23,57 +22,12 @@ export default defineComponent({
     IonApp, 
     IonContent, 
     IonRouterOutlet,
-    IonPage
+    IonPage,
+    IonMenu
   },
   setup() {
-    const selectedIndex = ref(0);
-    const appPages = [
-      {
-        title: 'Iventory',
-        url: '/tabs/inventory',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
-      },
-      {
-        title: 'Items',
-        url: '/tabs/items',
-        iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp
-      },
-      {
-        title: 'Log',
-        url: '/tabs/log',
-        iosIcon: heartOutline,
-        mdIcon: heartSharp
-      }
-    ];
-    
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
-    
-    const route = useRoute();
-    
-    return { 
-      selectedIndex,
-      appPages, 
-      archiveOutline, 
-      archiveSharp, 
-      bookmarkOutline, 
-      bookmarkSharp, 
-      heartOutline, 
-      heartSharp, 
-      mailOutline, 
-      mailSharp, 
-      paperPlaneOutline, 
-      paperPlaneSharp, 
-      trashOutline, 
-      trashSharp, 
-      warningOutline, 
-      warningSharp,
-      isSelected: (url: string) => url === route.path ? 'selected' : ''
-    }
+
+    return { }
   }
 });
 </script>
