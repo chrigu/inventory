@@ -25,14 +25,24 @@
         <strong class="capitalize">No items added, add one</strong>
       </div>
     </ion-content>
+          <ion-modal
+    :is-open="isOpenRef"
+    css-class="my-custom-class"
+    @onDidDismiss="setOpen(false)"
+  >
+    <ItemModal :data="data" :title="'helllo'">
+    </ItemModal>
+  </ion-modal>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonButton, IonIcon } from '@ionic/vue';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonButton, IonIcon, IonModal } from '@ionic/vue';
 import { addCircleOutline, addCircleSharp } from 'ionicons/icons';
 import { useRoute } from 'vue-router';
 import { ref, computed, watch } from 'vue';
+
+import ItemModal from '../components/ItemModal.vue'
 
 export default {
   name: 'Inventory',
@@ -45,15 +55,22 @@ export default {
     IonTitle,
     IonToolbar,
     IonButton,
-    IonIcon
+    IonIcon,
+    ItemModal,
+    IonModal
   },
   setup() {
     const route = useRoute();
     const folder = ref(route.params.id || 'Inbox');
     const matchedFolder = computed(() => route.params.id);
+
+    const isOpenRef = ref(false);
+    const setOpen = (state: boolean) => isOpenRef.value = state;
+    const data = { content: 'New Content' };
   
     const addItem = () => {
       console.log('add')
+      setOpen(true)
     }
     
     watch(matchedFolder, () => {
@@ -64,7 +81,9 @@ export default {
       folder,
       iosIcon: addCircleOutline,
       mdIcon: addCircleSharp,
-      addItem
+      addItem,
+      isOpenRef,
+      setOpen
     }
   }
 }

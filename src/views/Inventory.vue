@@ -27,7 +27,7 @@
 <script lang="ts">
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRoute } from 'vue-router';
-import { ref, computed, watch } from 'vue';
+// import { ref } from 'vue';
 
 export default {
   name: 'Inventory',
@@ -38,18 +38,15 @@ export default {
     IonMenuButton,
     IonPage,
     IonTitle,
-    IonToolbar,
+    IonToolbar
   },
   setup() {
-    const route = useRoute();
-    const folder = ref(route.params.id || 'Inbox');
-    const matchedFolder = computed(() => route.params.id);
-    
-    watch(matchedFolder, () => {
-      folder.value = matchedFolder.value as string;
-    })
-    
-    return { folder }
+
+    //     const route = useRoute();
+    // const folder = ref(route.params.id || 'Inbox');
+    // const matchedFolder = computed(() => route.params.id);
+
+    return {  }
   }
 }
 </script>
