@@ -14,33 +14,61 @@ if (firebase.apps.length === 0) {
   console.log(process, FIREBASE_CONFIG)
 }
 
-// const USERS_COLLECTION_PATH = "users/";
-
-function createBeer (doc: firebase.firestore.DocumentData | undefined) {
-
-  return {
-    ...doc?.data()
-  }
-}
 
 export default function() {
   const addItem = async (item: any) => {
     const userId = (authState.user.value as any)?.uid
-    // beer.userId = userId
+    item.userId = userId
 
-    // const resp  = await firebase
-    //   .firestore()
-    //   .collection('beers')
-    //   .add(beer)
-    // .then(function(docRef) {
-    //     console.log("Document written with ID: ", docRef.id);
-    // })
-    // .catch(function(error) {
-    //     console.error("Error adding document: ", error);
-    // });
+    const resp  = await firebase
+      .firestore()
+      .collection('items')
+      .add(item)
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error)
+    })
+  }
+
+  const getItems = async () => {
+    const resp  = await firebase
+      .firestore()
+      .collection('items')
+      .get()
+      .then(function(querySnapshot) {
+          let items: any[] = []
+          querySnapshot.forEach(doc => {
+              // doc.data() is never undefined for query doc snapshots
+              items = [...items, doc.data()]
+          });
+
+          return items
+      })
+      .catch(function(error) {
+          console.log("Error getting documents: ", error);
+      });
+
+      return resp
+  }
+
+  const subscribeItems = (updateFn: Function) => {
+    firebase
+    .firestore()
+    .collection('items')
+    .onSnapshot(function(querySnapshot) {
+        const items: any[] = [];
+        querySnapshot.forEach(function(doc) {
+            items.push(doc.data());
+        });
+        updateFn(items)
+    });
   }
 
   return {
-    addItem
+    addItem,
+    getItems,
+    subscribeItems
   };
 }
