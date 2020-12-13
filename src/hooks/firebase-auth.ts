@@ -13,6 +13,10 @@ if (firebase.apps.length === 0) {
   console.log(process, FIREBASE_CONFIG)
 }
 
+const auth = firebase.auth()
+
+auth.useEmulator("http://localhost:9099")
+
 // const USERS_COLLECTION_PATH = "users/";
 
 interface TState {
@@ -40,8 +44,7 @@ export default function() {
   const login = (username: string, password: string) => {
     state.loading = true;
 
-    return firebase
-      .auth()
+    return auth
       .signInWithEmailAndPassword(username, password)
       //load user data from db
       .then(
@@ -70,8 +73,7 @@ export default function() {
    *
    */
   const logout = () => {
-    return firebase
-      .auth()
+    return auth
       .signOut()
       .then(
         () => {

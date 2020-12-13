@@ -21,15 +21,6 @@
         </ion-toolbar>
       </ion-header>
       <ItemList :items="items" />
-      <!-- <ion-list v-if="hasItems">
-        <ion-item v-for="item in items" :key="item.id">
-          <ion-label>{{item.name}}</ion-label>
-          <ion-icon slot="end" :ios="pencilIcon.iosIcon" :md="pencilIcon.mdIcon"></ion-icon>
-        </ion-item>
-      </ion-list>
-      <div v-else id="container">
-        <strong class="capitalize">No items added, add one</strong>
-      </div> -->
     </ion-content>
   </ion-page>
 </template>
@@ -45,8 +36,7 @@
     IonToolbar,
     IonButton,
     IonIcon,
-    IonModal,
-    modalController,
+    modalController
   } from "@ionic/vue";
   import { addCircleOutline, addCircleSharp, pencilOutline, pencilSharp } from "ionicons/icons";
   import { useRoute } from "vue-router";
@@ -85,24 +75,21 @@
           component: ItemModal,
           cssClass: "my-custom-class",
           componentProps: {
-            propsData: {
-              title: "New title",
-            },
+            title: "New title",
           },
         });
         modal.onDidDismiss().then(() => {
-          console.log("didDismess");
-        });
+          console.log("didDismess")
+        })
         return modal.present();
-      };
+      }
 
       onBeforeMount(async () => {
         // (items.value as any) = await store.getItems();
         store.subscribeItems((updatedItems: any) => {
           items.value = updatedItems
           console.log(items.value);
-          })
-
+        })
       })
 
       const hasItems = computed(() => items.value.length > 0)

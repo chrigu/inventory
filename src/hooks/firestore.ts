@@ -1,11 +1,12 @@
 // https://github.com/aaronksaunders/ionic-vue3-sample-3/blob/master/src/hooks/firebase-auth.ts
-import firebase from "firebase";
+import firebase from "firebase"
 // Required for side-effects
 import "firebase/firestore";
 import useFirebaseAuth from "../hooks/firebase-auth";
 
 import FIREBASE_CONFIG from "../firebase.config";
 const authState = useFirebaseAuth()
+const db = firebase.firestore();
 
 // initialize firebase, this is directly from the firebase documentation
 // regarding getting started for the web
@@ -14,14 +15,14 @@ if (firebase.apps.length === 0) {
   console.log(process, FIREBASE_CONFIG)
 }
 
+db.useEmulator("localhost", 8080)
 
 export default function() {
   const addItem = async (item: any) => {
     const userId = (authState.user.value as any)?.uid
     item.userId = userId
 
-    const resp  = await firebase
-      .firestore()
+    const resp  = await db
       .collection('items')
       .add(item)
     .then(function(docRef) {
@@ -33,8 +34,7 @@ export default function() {
   }
 
   const getItems = async () => {
-    const resp  = await firebase
-      .firestore()
+    const resp  = await db
       .collection('items')
       .get()
       .then(function(querySnapshot) {
@@ -54,13 +54,16 @@ export default function() {
   }
 
   const subscribeItems = (updateFn: Function) => {
-    firebase
-    .firestore()
+    db
     .collection('items')
     .onSnapshot(function(querySnapshot) {
         const items: any[] = [];
         querySnapshot.forEach(function(doc) {
-            items.push(doc.data());
+          const docData = doc.data()
+            items.push({
+              ...docData,
+              id: doc.id
+            });
         });
         updateFn(items)
     });

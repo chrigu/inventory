@@ -15,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'login',
     component: Login
   },
+  {
+    path: '/print/:id',
+    name: 'print',
+    component: () => import ('../views/Print.vue'),
+  },
   { 
     path: '/tabs',
     name: 'home',

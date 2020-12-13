@@ -39,7 +39,7 @@ import { defineComponent, ref } from 'vue';
 import useFirestore from "../hooks/firestore";
 
 export default defineComponent({
-  name: 'Modal',
+  name: 'ItemModal',
   props: {
     title: { type: String, default: 'Super Modal' },
   },

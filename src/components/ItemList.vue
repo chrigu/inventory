@@ -1,7 +1,7 @@
 <template>
     <div>
       <ion-list v-if="hasItems">
-        <ion-item v-for="item in items" :key="item.id">
+        <ion-item v-for="item in items" :key="item.id" @click="openModal(item)">
           <ion-label>{{item.name}}</ion-label>
           <ion-icon slot="end" :ios="pencilIcon.iosIcon" :md="pencilIcon.mdIcon"></ion-icon>
         </ion-item>
@@ -17,10 +17,13 @@
     IonIcon,
     IonList,
     IonLabel,
-    IonItem
+    IonItem,
+    modalController
   } from "@ionic/vue";
-  import { pencilOutline, pencilSharp } from "ionicons/icons";
-  import { computed } from "vue";
+  import { pencilOutline, pencilSharp } from "ionicons/icons"
+  import { computed } from "vue"
+
+  import ItemDetailModal from "../components/ItemDetailModal.vue";
 
   export default {
     name: "ItemList",
@@ -37,12 +40,28 @@
       
       const hasItems = computed(() => (props as any).items.length > 0)
 
+      const openModal = async (item: any) => {
+        console.log('open', item, item.value)
+        const modal = await modalController.create({
+          component: ItemDetailModal,
+          cssClass: "my-custom-class",
+          componentProps: {
+            item: item
+          },
+        });
+        modal.onDidDismiss().then(() => {
+          console.log("didDismess")
+        })
+        return modal.present();
+      }
+
       return {
         pencilIcon: {
           iosIcon: pencilOutline,
           mdIcon: pencilSharp,
         },
-        hasItems
+        hasItems,
+        openModal
       };
     },
   };

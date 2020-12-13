@@ -11,6 +11,8 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "allowJs": true,
+    "noImplicitAny": false, // remove
     "types": [
       "webpack-env",
       "jest"
@@ -35,7 +37,8 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "types/types.ts"
   ],
   "exclude": [
     "node_modules"
