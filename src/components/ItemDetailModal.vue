@@ -52,6 +52,7 @@ import {
     modalController, 
     IonPage } from '@ionic/vue';
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router';
 import useFirestore from "../hooks/firestore"
 
 import Barcode from '@/components/Barcode.vue'
@@ -73,6 +74,7 @@ setup(props) {
 
   const store = useFirestore()
   const modalItem = ref<any>({...(props.item)})
+  const router = useRouter()
 
   const handleChange = (e: CustomEvent) => {
       const name: string = (e?.target as any)?.name;
@@ -86,12 +88,30 @@ setup(props) {
       amount: modalItem.value.amount,
     })
     modalController.dismiss()
-  };
+  }
+
+  const deleteItem = () => {
+    store.deleteItem(modalItem.value.id).then(() => {
+        modalController.dismiss('itemDeleted')
+    })
+
+  }
+
+  const print = () => {
+    const route = router.resolve({
+        name: 'print', 
+        params: {id: modalItem.value.id},
+        query: { text: modalItem.value.name }
+    })
+    window.open(route.href, '_blank');
+  }
 
   return {
     modalItem,
     saveItem,
-    handleChange
+    handleChange,
+    print,
+    deleteItem
   };
   },
   components: { 

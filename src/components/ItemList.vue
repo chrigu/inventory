@@ -18,7 +18,8 @@
     IonList,
     IonLabel,
     IonItem,
-    modalController
+    modalController,
+    toastController
   } from "@ionic/vue";
   import { pencilOutline, pencilSharp } from "ionicons/icons"
   import { computed } from "vue"
@@ -40,6 +41,15 @@
       
       const hasItems = computed(() => (props as any).items.length > 0)
 
+      const openToast = async () => {
+        const toast = await toastController
+          .create({
+            message: 'Yay! Item was deleted',
+            duration: 2000
+          })
+        return toast.present();
+      }
+
       const openModal = async (item: any) => {
         console.log('open', item, item.value)
         const modal = await modalController.create({
@@ -49,8 +59,11 @@
             item: item
           },
         });
-        modal.onDidDismiss().then(() => {
-          console.log("didDismess")
+        modal.onDidDismiss().then(async (data) => {
+          console.log("didDismess", data.data)
+          if (data.data === 'itemDeleted') {
+            await openToast()
+          }
         })
         return modal.present();
       }

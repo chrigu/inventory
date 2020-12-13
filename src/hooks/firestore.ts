@@ -69,9 +69,17 @@ export default function() {
     });
   }
 
+  const deleteItem = async (itemId: string) => {
+    return await db
+    .collection('items')
+    .doc(itemId)
+    .delete();
+  }
+
   return {
     addItem,
     getItems,
-    subscribeItems
+    subscribeItems,
+    deleteItem
   };
 }
