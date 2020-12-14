@@ -34,7 +34,7 @@
       </ion-item>
       <ion-button color="primary" @click="saveItem()">Save</ion-button>
       <ion-button color="secondary" @click="print()">Print</ion-button>
-      <ion-button color="warning" @click="deleteItem()">Delete</ion-button>
+      <ion-button :color="buttonType" @click="deleteItem()">{{deleteButtonText}}</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -51,7 +51,7 @@ import {
     IonContent, 
     modalController, 
     IonPage } from '@ionic/vue';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { useRouter } from 'vue-router';
 import useFirestore from "../hooks/firestore"
 
@@ -75,6 +75,9 @@ setup(props) {
   const store = useFirestore()
   const modalItem = ref<any>({...(props.item)})
   const router = useRouter()
+  const deleteButtonState = ref('DELETE')
+  const deleteButtonText = computed(() => deleteButtonState.value === 'DELETE' ? 'Delete' : 'Confirm delete')
+  const buttonType = computed(() => deleteButtonState.value === 'DELETE' ? 'warning' : 'danger')
 
   const handleChange = (e: CustomEvent) => {
       const name: string = (e?.target as any)?.name;
@@ -91,10 +94,14 @@ setup(props) {
   }
 
   const deleteItem = () => {
-    store.deleteItem(modalItem.value.id).then(() => {
-        modalController.dismiss('itemDeleted')
-    })
-
+      if (deleteButtonState.value === 'DELETE') {
+        deleteButtonState.value = 'CONFIRM'
+      } else {
+        store.deleteItem(modalItem.value.id).then(() => {
+            modalController.dismiss('itemDeleted')
+            deleteButtonState.value = 'DELETE'
+        })
+      }
   }
 
   const print = () => {
@@ -111,20 +118,22 @@ setup(props) {
     saveItem,
     handleChange,
     print,
-    deleteItem
+    deleteItem,
+    buttonType,
+    deleteButtonText
   };
   },
   components: { 
-      IonHeader, 
-      IonTitle, 
-      IonToolbar, 
-      IonButton, 
-      IonPage, 
-      IonItem, 
-      IonLabel, 
-      IonContent, 
-      IonInput,
-      Barcode
+    IonHeader, 
+    IonTitle, 
+    IonToolbar, 
+    IonButton, 
+    IonPage, 
+    IonItem, 
+    IonLabel, 
+    IonContent, 
+    IonInput,
+    Barcode
   }
 });
 </script>

@@ -58,16 +58,6 @@ export default defineComponent({
       item.value[name as string] = e.detail.value;
     };
 
-    // const handleAlert = (message: string, isError = false) => {
-    //   alertController
-    //     .create({
-    //       header: isError ? "Error Message" : "Notice",
-    //       message: message,
-    //       buttons: ["OK"],
-    //     })
-    //     .then((t) => t.present());
-    // };
-
     const saveItem = async () => {
       console.log('save', item)
       await store.addItem({
@@ -75,7 +65,8 @@ export default defineComponent({
         description: item.value.description,
         amount: item.value.amount,
       })
-      modalController.dismiss()
+
+      modalController.dismiss('itemSaved')
     };
 
     return {

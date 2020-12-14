@@ -20,6 +20,7 @@
           <ion-title size="large">{{ folder }}</ion-title>
         </ion-toolbar>
       </ion-header>
+      <ion-searchbar></ion-searchbar>
       <ItemList :items="items" />
     </ion-content>
   </ion-page>
@@ -36,7 +37,9 @@
     IonToolbar,
     IonButton,
     IonIcon,
-    modalController
+    modalController,
+    IonSearchbar,
+    toastController
   } from "@ionic/vue";
   import { addCircleOutline, addCircleSharp, pencilOutline, pencilSharp } from "ionicons/icons";
   import { useRoute } from "vue-router";
@@ -59,8 +62,8 @@
       IonToolbar,
       IonButton,
       IonIcon,
-      ItemList
-      // IonModal
+      ItemList,
+      IonSearchbar
     },
     setup() {
       const route = useRoute();
@@ -75,11 +78,24 @@
           component: ItemModal,
           cssClass: "my-custom-class",
           componentProps: {
-            title: "New title",
+            title: 'Add item',
           },
         });
-        modal.onDidDismiss().then(() => {
-          console.log("didDismess")
+
+        const openToast = async () => {
+            const toast = await toastController
+            .create({
+                message: 'Yay! Item was added.',
+                duration: 2000
+            })
+            return toast.present();
+        }
+
+        modal.onDidDismiss().then(async (data) => {
+          console.log("didDismess", data.data)
+          if (data.data === 'itemSaved') {
+            await openToast()
+          }
         })
         return modal.present();
       }

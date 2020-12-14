@@ -10,6 +10,11 @@ service cloud.firestore {
       allow read, update, delete: if isAuthenticated(request);
       allow create: if isAuthenticated(request) && isItemCreator(request);
     }
+
+    match /logs/{itemId} {
+      allow write, delete: if false;
+      allow read: if isAuthenticated(request);
+    }
   }
 }
 

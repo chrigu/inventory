@@ -3,7 +3,6 @@
       <ion-list v-if="hasItems">
         <ion-item v-for="item in items" :key="item.id" @click="openModal(item)">
           <ion-label>{{item.name}}</ion-label>
-          <ion-icon slot="end" :ios="pencilIcon.iosIcon" :md="pencilIcon.mdIcon"></ion-icon>
         </ion-item>
       </ion-list>
       <div v-else id="container">
@@ -14,14 +13,12 @@
 
 <script lang="ts">
   import {
-    IonIcon,
     IonList,
     IonLabel,
     IonItem,
     modalController,
     toastController
   } from "@ionic/vue";
-  import { pencilOutline, pencilSharp } from "ionicons/icons"
   import { computed } from "vue"
 
   import ItemDetailModal from "../components/ItemDetailModal.vue";
@@ -29,7 +26,6 @@
   export default {
     name: "ItemList",
     components: {
-      IonIcon,
       IonLabel,
       IonList,
       IonItem
@@ -44,7 +40,7 @@
       const openToast = async () => {
         const toast = await toastController
           .create({
-            message: 'Yay! Item was deleted',
+            message: 'Item was deleted.',
             duration: 2000
           })
         return toast.present();
@@ -69,10 +65,6 @@
       }
 
       return {
-        pencilIcon: {
-          iosIcon: pencilOutline,
-          mdIcon: pencilSharp,
-        },
         hasItems,
         openModal
       };
