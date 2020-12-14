@@ -34,7 +34,6 @@
       items: { type: Array, default: () => [] },
     },
     setup(props: Readonly<{items: unknown[]}>) {
-      
       const hasItems = computed(() => (props as any).items.length > 0)
 
       const openToast = async () => {

@@ -67,7 +67,7 @@ export default defineComponent({
       },
       {
         title: 'Log',
-        url: '/tabs/log',
+        url: '/tabs/logs',
         iosIcon: documentOutline,
         mdIcon: documentSharp
       }

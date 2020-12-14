@@ -34,6 +34,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import ('../views/Items.vue')
       },
       {
+        path: 'logs',
+        component: () => import ('../views/Logs.vue')
+      },
+      {
         path: '/folder/:id',
         component: () => import ('../views/Folder.vue')
       }

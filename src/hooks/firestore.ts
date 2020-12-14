@@ -76,10 +76,27 @@ export default function() {
     .delete();
   }
 
+  const subscribeLogs = (updateFn: Function) => {
+    db
+    .collection('logs')
+    .onSnapshot(function(querySnapshot) {
+        const logs: any[] = [];
+        querySnapshot.forEach(function(doc) {
+          const docData = doc.data()
+            logs.push({
+              ...docData,
+              id: doc.id
+            });
+        });
+        updateFn(logs)
+    });
+  }
+
   return {
     addItem,
     getItems,
     subscribeItems,
-    deleteItem
+    deleteItem,
+    subscribeLogs
   };
 }
