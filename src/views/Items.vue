@@ -20,7 +20,8 @@
           <ion-title size="large">{{ folder }}</ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-searchbar></ion-searchbar>
+      <ion-searchbar @ionChange="handleChange"></ion-searchbar>
+      <div class="ion-margin">Filter</div>
       <ItemList :items="items" />
     </ion-content>
   </ion-page>
@@ -46,6 +47,7 @@
   import { ref, computed, watch, onBeforeMount } from "vue";
 
   import useFirestore from "../hooks/firestore";
+  import useItems from "../hooks/items";
 
   import ItemModal from "../components/ItemModal.vue";
   import ItemList from "../components/ItemList.vue";
@@ -66,12 +68,14 @@
       IonSearchbar
     },
     setup() {
-      const route = useRoute();
+      const route = useRoute()
+      const itemsStore = useItems()
       const folder = ref(route.params.id || "Inbox");
       const matchedFolder = computed(() => route.params.id);
 
       const store = useFirestore()
-      const items = ref([])
+      const items = itemsStore.filteredItems
+      const hasItems = itemsStore.hasItems
 
       const openModal = async () => {
         const modal = await modalController.create({
@@ -103,16 +107,16 @@
       onBeforeMount(async () => {
         // (items.value as any) = await store.getItems();
         store.subscribeItems((updatedItems: any) => {
-          items.value = updatedItems
-          console.log(items.value);
+          itemsStore.setItems(updatedItems)
+        //   items.value = updatedItems
+        //   console.log(items.value);
         })
       })
 
-      const hasItems = computed(() => items.value.length > 0)
-
-      watch(matchedFolder, () => {
-        folder.value = matchedFolder.value as string;
-      });
+      const handleChange = (e: CustomEvent) => {
+        const name: string = (e?.target as any)?.name;
+        itemsStore.setSearchTerm(e.detail.value)
+      };
 
       return {
         folder,
@@ -126,7 +130,8 @@
         },
         openModal,
         items,
-        hasItems
+        hasItems,
+        handleChange
       };
     },
   };

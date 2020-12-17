@@ -2,7 +2,7 @@
     <div>
       <ion-list v-if="hasItems">
         <ion-item v-for="item in items" :key="item.id" @click="openModal(item)">
-          <ion-label>{{item.name}}</ion-label>
+          <ion-label>{{item.name}} ({{item.amount}})</ion-label>
         </ion-item>
       </ion-list>
       <div v-else id="container">

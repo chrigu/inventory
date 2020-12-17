@@ -16,18 +16,37 @@
         </ion-toolbar>
       </ion-header>
     
-      <div id="container">
-        <strong class="capitalize">{{ folder }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
+    <ion-card v-for="item in items" :key="item.id">
+        <ion-card-header>
+        <ion-card-title>{{item.name}}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+        {{item.description}}
+        </ion-card-content>
+    </ion-card>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { 
+    IonButtons, 
+    IonContent, 
+    IonHeader, 
+    IonMenuButton, 
+    IonPage, 
+    IonTitle, 
+    IonToolbar,
+    IonCard,
+    IonCardContent,
+    IonCardTitle,
+    IonCardHeader
+    } from '@ionic/vue';
 import { useRoute } from 'vue-router';
-// import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
+
+import useFirestore from "../hooks/firestore";
 
 export default {
   name: 'Inventory',
@@ -38,15 +57,25 @@ export default {
     IonMenuButton,
     IonPage,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonCard,
+    IonCardContent,
+    IonCardTitle,
+    IonCardHeader
   },
   setup() {
 
-    //     const route = useRoute();
-    // const folder = ref(route.params.id || 'Inbox');
-    // const matchedFolder = computed(() => route.params.id);
+    const store = useFirestore()
+    const items = ref([])
 
-    return {  }
+    onBeforeMount(async () => {
+        store.subscribeItems((updatedItems: any) => {
+            items.value = updatedItems
+            console.log(items.value);
+        })
+    })
+
+    return { items }
   }
 }
 </script>

@@ -8,7 +8,7 @@ const state = useFirebaseAuth();
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: '/tabs'
+    redirect: '/tabs/inventory'
   },
   {
     path: '/login',

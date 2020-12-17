@@ -2,7 +2,7 @@
     <div>
       <ion-list v-if="hasLogs">
         <ion-item v-for="log in logs" :key="log.id">
-          <ion-label>{{log.type}}</ion-label>
+          <ion-label>{{log.type}}  {{log.item.title}}</ion-label>
         </ion-item>
       </ion-list>
       <div v-else id="container">
