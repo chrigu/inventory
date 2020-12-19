@@ -32,7 +32,7 @@
       logs: { type: Array, default: () => [] },
     },
     setup(props: Readonly<{logs: unknown[]}>) {
-            console.log(props.logs)
+      console.log(props.logs)
 
       const hasLogs = computed(() => (props as any).logs.length > 0)
 

@@ -17,6 +17,7 @@
     "core-js": "^3.6.5",
     "firebase": "^8.1.2",
     "jsbarcode": "^3.11.3",
+    "vee-validate": "^4.0.7",
     "vue": "^3.0.0-0",
     "vue-router": "^4.0.0-0"
   },

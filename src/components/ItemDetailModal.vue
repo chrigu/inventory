@@ -9,29 +9,7 @@
         <ion-item>
             <Barcode :barcode="modalItem.id" :text="modalItem.name"/>
         </ion-item>
-      <ion-item>
-        <ion-label>Name</ion-label>
-        <ion-input name="name" type="text" placeholder="name"  @ionChange="handleChange" :value="modalItem.name"/>
-      </ion-item>
-      <ion-item>
-        <ion-label>Description</ion-label>
-        <ion-input
-          name="description"
-          type="text"
-          placeholder="Cat food"
-          @ionChange="handleChange"
-          :value="modalItem.description"
-        />
-      </ion-item>
-      <ion-item>
-        <ion-label>Amount</ion-label>
-        <ion-input
-          name="amount"
-          type="number"
-          @ionChange="handleChange"
-          :value="modalItem.amount"
-        />
-      </ion-item>
+      <ItemForm :name="modalItem.name" :description="modalItem.description" :amount="modalItem.amount" />
       <ion-button color="primary" @click="saveItem()">Save</ion-button>
       <ion-button color="secondary" @click="print()">Print</ion-button>
       <ion-button :color="buttonType" @click="deleteItem()">{{deleteButtonText}}</ion-button>
@@ -45,15 +23,14 @@ import {
     IonTitle, 
     IonToolbar, 
     IonItem, 
-    IonLabel, 
-    IonInput, 
     IonButton, 
     IonContent, 
     modalController, 
     IonPage } from '@ionic/vue';
 import { defineComponent, ref, computed } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 import useFirestore from "../hooks/firestore"
+import ItemForm from "./ItemForm.vue"
 
 import Barcode from '@/components/Barcode.vue'
 
@@ -130,10 +107,9 @@ setup(props) {
     IonButton, 
     IonPage, 
     IonItem, 
-    IonLabel, 
     IonContent, 
-    IonInput,
-    Barcode
+    Barcode,
+    ItemForm
   }
 });
 </script>
